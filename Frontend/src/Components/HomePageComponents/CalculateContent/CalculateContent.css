@@ -1,0 +1,96 @@
+.calculate-section {
+  align-items: end;
+  justify-content: end;
+  display: flex !important;
+  background-image: url(../../../Assets/HomePageImages/CalculateImg/calculatebg.png);
+  background-size: 100% 100%;
+}
+
+.calculate-main-div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.calculate-title {
+  color: #17522b;
+  font-family: "Work Sans-Black", Helvetica;
+  font-size: 35px;
+  font-weight: 900;
+  text-align: center;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}
+
+.description {
+  color: #17522b;
+  font-family: "Work Sans-Black", Helvetica;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  align-items: end;
+  justify-content: end;
+  width: 700px;
+  position: relative;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+.description b {
+  letter-spacing: 0.4px;
+  font-family: "Work Sans-Black", Helvetica;
+  font-weight: 900;
+}
+
+.arrow-desc {
+  position: relative;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  margin-top: -30px;
+}
+
+.arrow-desc p {
+  color: #17532b;
+  font-family: "Yellowtail-Regular", Helvetica;
+  font-size: 20px;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  margin-top: 0px;
+}
+
+.arrow-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 10px;
+  height: 100px;
+}
+
+.arrow {
+  position: relative;
+  display: block;
+  height: auto;
+  width: 150px;
+
+  padding-top: -10px;
+}
+
+.Calculate-Form {
+  padding: 0px;
+  height: 450px;
+  width: 680px;
+  border: 1px solid whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
