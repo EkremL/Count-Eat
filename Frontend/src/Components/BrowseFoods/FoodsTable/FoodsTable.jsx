@@ -1,448 +1,39 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { GrFormClose } from "react-icons/gr";
-import Foods from "../../../echo.json";
-// const products = [
-//   {
-//     id: 1,
-//     Category: "Electronics",
-//     Company: "Apple",
-//     Product: "iPhone 13",
-//     Description: "The latest iPhone with advanced features",
-//     Price: 999,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-05",
-//         Customer: "John Doe",
-//         Quantity: 2,
-//         TotalAmount: 1998,
-//       },
-//       {
-//         Date: "2023-09-04",
-//         Customer: "Jane Smith",
-//         Quantity: 1,
-//         TotalAmount: 999,
-//       },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     Category: "Clothing",
-//     Company: "Nike",
-//     Product: "Running Shoes",
-//     Description: "High-quality running shoes for athletes",
-//     Price: 89,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-05",
-//         Customer: "Alice Johnson",
-//         Quantity: 3,
-//         TotalAmount: 267,
-//       },
-//       {
-//         Date: "2023-09-03",
-//         Customer: "Bob Brown",
-//         Quantity: 2,
-//         TotalAmount: 178,
-//       },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     Category: "Books",
-//     Company: "Penguin Books",
-//     Product: "The Great Gatsby",
-//     Description: "Classic novel by F. Scott Fitzgerald",
-//     Price: 12,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-02",
-//         Customer: "Ella Williams",
-//         Quantity: 5,
-//         TotalAmount: 60,
-//       },
-//     ],
-//   },
-//   {
-//     id: 4,
-//     Category: "Home Appliances",
-//     Company: "Samsung",
-//     Product: "Smart Refrigerator",
-//     Description: "Refrigerator with smart features and spacious design",
-//     Price: 14,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-05",
-//         Customer: "David Wilson",
-//         Quantity: 1,
-//         TotalAmount: 14,
-//       },
-//     ],
-//   },
-//   {
-//     id: 5,
-//     Category: "Electronics",
-//     Company: "Sony",
-//     Product: "PlayStation 5",
-//     Description: "Next-gen gaming console",
-//     Price: 499,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-06",
-//         Customer: "Sarah Davis",
-//         Quantity: 1,
-//         TotalAmount: 499,
-//       },
-//     ],
-//   },
-//   {
-//     id: 6,
-//     Category: "Clothing",
-//     Company: "Adidas",
-//     Product: "Sneakers",
-//     Description: "Stylish sneakers for everyday wear",
-//     Price: 75,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-07",
-//         Customer: "Michael Lee",
-//         Quantity: 2,
-//         TotalAmount: 150,
-//       },
-//     ],
-//   },
-//   {
-//     id: 7,
-//     Category: "Electronics",
-//     Company: "Samsung",
-//     Product: "4K Smart TV",
-//     Description: "High-quality 4K television with smart features",
-//     Price: 799,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-08",
-//         Customer: "Sophia Anderson",
-//         Quantity: 1,
-//         TotalAmount: 799,
-//       },
-//     ],
-//   },
-//   {
-//     id: 8,
-//     Category: "Home Appliances",
-//     Company: "LG",
-//     Product: "Front-Load Washer",
-//     Description: "Efficient front-load washing machine",
-//     Price: 599,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-09",
-//         Customer: "William Taylor",
-//         Quantity: 1,
-//         TotalAmount: 599,
-//       },
-//     ],
-//   },
-//   {
-//     id: 9,
-//     Category: "Books",
-//     Company: "HarperCollins",
-//     Product: "To Kill a Mockingbird",
-//     Description: "Classic novel by Harper Lee",
-//     Price: 15,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-10",
-//         Customer: "Olivia Martinez",
-//         Quantity: 3,
-//         TotalAmount: 45,
-//       },
-//     ],
-//   },
-//   {
-//     id: 10,
-//     Category: "Clothing",
-//     Company: "H&M",
-//     Product: "Denim Jeans",
-//     Description: "Stylish denim jeans for men and women",
-//     Price: 49,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-11",
-//         Customer: "James Johnson",
-//         Quantity: 2,
-//         TotalAmount: 98,
-//       },
-//     ],
-//   },
-//   {
-//     id: 11,
-//     Category: "Electronics",
-//     Company: "Sony",
-//     Product: "Wireless Headphones",
-//     Description: "High-quality wireless headphones with noise cancellation",
-//     Price: 249,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-12",
-//         Customer: "Liam Jackson",
-//         Quantity: 1,
-//         TotalAmount: 249,
-//       },
-//     ],
-//   },
-//   {
-//     id: 12,
-//     Category: "Home Appliances",
-//     Company: "KitchenAid",
-//     Product: "Stand Mixer",
-//     Description: "Powerful stand mixer for baking and cooking",
-//     Price: 299,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-13",
-//         Customer: "Ava Harris",
-//         Quantity: 1,
-//         TotalAmount: 299,
-//       },
-//     ],
-//   },
-//   {
-//     id: 13,
-//     Category: "Books",
-//     Company: "Random House",
-//     Product: "The Catcher in the Rye",
-//     Description: "Classic novel by J.D. Salinger",
-//     Price: 10,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-14",
-//         Customer: "Noah Martinez",
-//         Quantity: 4,
-//         TotalAmount: 40,
-//       },
-//     ],
-//   },
-//   {
-//     id: 14,
-//     Category: "Clothing",
-//     Company: "Zara",
-//     Product: "Leather Jacket",
-//     Description: "Stylish leather jacket for men and women",
-//     Price: 129,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-15",
-//         Customer: "Sophia Wilson",
-//         Quantity: 2,
-//         TotalAmount: 258,
-//       },
-//     ],
-//   },
-//   {
-//     id: 15,
-//     Category: "Electronics",
-//     Company: "Bose",
-//     Product: "Bluetooth Speaker",
-//     Description: "Portable Bluetooth speaker with excellent sound quality",
-//     Price: 129,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-16",
-//         Customer: "Mason Davis",
-//         Quantity: 3,
-//         TotalAmount: 387,
-//       },
-//     ],
-//   },
-//   {
-//     id: 16,
-//     Category: "Books",
-//     Company: "Simon & Schuster",
-//     Product: "1984",
-//     Description: "Dystopian novel by George Orwell",
-//     Price: 14,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-18",
-//         Customer: "Lucas Taylor",
-//         Quantity: 5,
-//         TotalAmount: 70,
-//       },
-//     ],
-//   },
-//   {
-//     id: 17,
-//     Category: "Clothing",
-//     Company: "Forever 21",
-//     Product: "Summer Dress",
-//     Description: "Casual summer dress for women",
-//     Price: 29,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-19",
-//         Customer: "Aiden Brown",
-//         Quantity: 4,
-//         TotalAmount: 116,
-//       },
-//     ],
-//   },
-//   {
-//     id: 18,
-//     Category: "Electronics",
-//     Company: "Microsoft",
-//     Product: "Xbox Series X",
-//     Description: "Next-gen gaming console by Microsoft",
-//     Price: 499,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-20",
-//         Customer: "Luna Garcia",
-//         Quantity: 1,
-//         TotalAmount: 499,
-//       },
-//     ],
-//   },
-//   {
-//     id: 19,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 20,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 21,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 22,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 23,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 24,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-//   {
-//     id: 25,
-//     Category: "Home Appliances",
-//     Company: "Cuisinart",
-//     Product: "Coffee Maker",
-//     Description: "Programmable coffee maker for coffee lovers",
-//     Price: 69,
-//     CustomDetails: [
-//       {
-//         Date: "2023-09-21",
-//         Customer: "Eli Johnson",
-//         Quantity: 2,
-//         TotalAmount: 138,
-//       },
-//     ],
-//   },
-// ];
+// import Foods from "../../../echo.json";
+
 const FoodsTable = () => {
-  // const [productList] = useState(products);
-  const [foods] = useState(Foods.Ingredient);
+  const [ingredients, setIngredients] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+  // const [foods] = useState(Foods.Ingredient);
   const [rowsLimit] = useState(20);
-  const [rowsToShow, setRowsToShow] = useState(foods.slice(0, rowsLimit));
+  const [rowsToShow, setRowsToShow] = useState(ingredients.slice(0, rowsLimit));
   const [customPagination, setCustomPagination] = useState([]);
-  const [totalPage] = useState(Math.ceil(foods?.length / rowsLimit));
+  const [totalPage, setTotalPage] = useState(
+    Math.ceil(ingredients?.length / rowsLimit)
+  );
   const [currentPage, setCurrentPage] = useState(0);
   const [searchFood, setSearchFood] = useState("");
   // const dropdownRef = useRef(null);
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
     const endIndex = startIndex + rowsLimit;
-    const newArray = Foods.Ingredient.slice(startIndex, endIndex);
+    const newArray = ingredients.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     setCurrentPage(currentPage + 1);
   };
   const changePage = (value) => {
     const startIndex = value * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    const newArray = Foods.Ingredient.slice(startIndex, endIndex);
+    const newArray = ingredients.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     setCurrentPage(value);
   };
   const previousPage = () => {
     const startIndex = (currentPage - 1) * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    const newArray = Foods.Ingredient.slice(startIndex, endIndex);
+    const newArray = ingredients.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -451,8 +42,10 @@ const FoodsTable = () => {
     }
   };
   useMemo(() => {
-    setCustomPagination(Array(Math.ceil(foods?.length / rowsLimit)).fill(null));
-  }, [rowsLimit, foods?.length]);
+    setCustomPagination(
+      Array(Math.ceil(ingredients?.length / rowsLimit)).fill(null)
+    );
+  }, [rowsLimit, ingredients?.length]);
 
   const handleClickCloseButton = (e) => {
     e.preventDefault();
@@ -464,6 +57,36 @@ const FoodsTable = () => {
   };
 
   // console.log(searchFood);
+
+  useEffect(() => {
+    const fetchIngretients = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/ingredients`);
+
+        if (response.ok) {
+          const data = await response.json();
+          setIngredients(data);
+        } else {
+          console.log("Veri çekme hatasi");
+        }
+      } catch (error) {
+        console.log("Çekme hatasi", error);
+      }
+    };
+    fetchIngretients();
+  }, [apiUrl]);
+
+  useEffect(() => {
+    // rowsToShow değerini güncelle
+    const startIndex = currentPage * rowsLimit;
+    const endIndex = startIndex + rowsLimit;
+    const newArray = ingredients.slice(startIndex, endIndex);
+    setRowsToShow(newArray);
+
+    // totalPage değerini güncelle
+    const newTotalPage = Math.ceil(ingredients.length / rowsLimit);
+    setTotalPage(newTotalPage);
+  }, [ingredients, currentPage, rowsLimit]);
 
   return (
     <div className=" min-h-screen h-full flex  items-center justify-center pt-2 pb-14 mx-8 ">
@@ -617,9 +240,9 @@ const FoodsTable = () => {
           <div className="text-lg">
             Showing {currentPage == 0 ? 1 : currentPage * rowsLimit + 1} to{" "}
             {currentPage == totalPage - 1
-              ? Foods?.length
+              ? ingredients?.length
               : (currentPage + 1) * rowsLimit}{" "}
-            of {Foods?.length} entries
+            of {ingredients?.length} entries
           </div>
           <div className="flex">
             <ul
