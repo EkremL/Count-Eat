@@ -13,6 +13,7 @@ import PrivacyPolicyPage from "./Pages/PrivacyPolicyPage";
 import SupportPage from "./Pages/SupportPage";
 import TermsOfUsePage from "./Pages/TermsOfUsePage";
 import RegisterPage from "./Pages/RegisterPage";
+import SingleFoodPage from "./Pages/SingleFoodPage";
 import "./App.css";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/dmca" element={<DMCAPage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/foods" element={<FoodsPage />} />
+        <Route path="/food/:id" element={<SingleFoodPage />} />
         <Route path="/forproffesionals" element={<ForProfessionalsPage />} />
         <Route path="/policy" element={<PrivacyPolicyPage />} />
         <Route path="/support" element={<SupportPage />} />

@@ -6,17 +6,17 @@ const Pagination = ({
   nextPage,
   changePage,
   previousPage,
-  ingredients,
+  foods,
   currentPage,
   rowsLimit,
 }) => {
   return (
     <div className="w-full  flex justify-center  flex-col sm:flex-row gap-5 mt-1.5 px-1 items-center">
       <div className="text-lg">
-        {ingredients?.length} Adet Besinden{" "}
+        {foods?.length} Adet Besinden{" "}
         {currentPage === 0 ? 1 : currentPage * rowsLimit + 1} ile{" "}
         {currentPage === totalPage - 1
-          ? ingredients?.length
+          ? foods?.length
           : (currentPage + 1) * rowsLimit}{" "}
         arasındakiler gösteriliyor.
       </div>
@@ -79,7 +79,7 @@ Pagination.propTypes = {
   nextPage: PropTypes.func,
   changePage: PropTypes.func,
   previousPage: PropTypes.func,
-  ingredients: PropTypes.array,
+  foods: PropTypes.array,
   currentPage: PropTypes.number,
   rowsLimit: PropTypes.number,
 };

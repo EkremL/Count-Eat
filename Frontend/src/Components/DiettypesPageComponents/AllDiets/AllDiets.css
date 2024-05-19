@@ -123,6 +123,7 @@ html {
 .sub-menu li:hover {
   border-left: 5px solid #17532b;
   color: #17532b;
+  padding-left: 5px;
 }
 
 .category-diet ul li {

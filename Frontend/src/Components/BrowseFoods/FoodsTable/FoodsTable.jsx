@@ -1,19 +1,22 @@
 import { useState, useMemo, useEffect } from "react";
 import { GrFormClose } from "react-icons/gr";
 import Pagination from "./Pagination";
-// import Foods from "../../../echo.json";
+import { Link } from "react-router-dom";
 
 const FoodsTable = () => {
-  const [ingredients, setIngredients] = useState([]);
+  const [foods, setFoods] = useState([]);
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const [activeCollection, setActiveCollection] = useState("ingredients"); // 'recipes' olabilir
+  const [activeCollection, setActiveCollection] = useState("recipes");
+  const [activeType, setActiveType] = useState("recipes");
+  const [activeTab, setActiveTab] = useState("Hepsi");
+  const [showCategories, setShowCategories] = useState(true);
+  const [selectedNutrient, setSelectedNutrient] = useState("Fiber");
 
-  // const [foods] = useState(Foods.Ingredient);
   const [rowsLimit] = useState(20);
-  const [rowsToShow, setRowsToShow] = useState(ingredients.slice(0, rowsLimit));
+  const [rowsToShow, setRowsToShow] = useState(foods.slice(0, rowsLimit));
   const [customPagination, setCustomPagination] = useState([]);
   const [totalPage, setTotalPage] = useState(
-    Math.ceil(ingredients?.length / rowsLimit)
+    Math.ceil(foods?.length / rowsLimit)
   );
   const [currentPage, setCurrentPage] = useState(0);
   const [searchFood, setSearchFood] = useState("");
@@ -21,21 +24,21 @@ const FoodsTable = () => {
   const nextPage = () => {
     const startIndex = rowsLimit * (currentPage + 1);
     const endIndex = startIndex + rowsLimit;
-    const newArray = ingredients.slice(startIndex, endIndex);
+    const newArray = foods.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     setCurrentPage(currentPage + 1);
   };
   const changePage = (value) => {
     const startIndex = value * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    const newArray = ingredients.slice(startIndex, endIndex);
+    const newArray = foods.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     setCurrentPage(value);
   };
   const previousPage = () => {
     const startIndex = (currentPage - 1) * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    const newArray = ingredients.slice(startIndex, endIndex);
+    const newArray = foods.slice(startIndex, endIndex);
     setRowsToShow(newArray);
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -44,10 +47,8 @@ const FoodsTable = () => {
     }
   };
   useMemo(() => {
-    setCustomPagination(
-      Array(Math.ceil(ingredients?.length / rowsLimit)).fill(null)
-    );
-  }, [rowsLimit, ingredients?.length]);
+    setCustomPagination(Array(Math.ceil(foods?.length / rowsLimit)).fill(null));
+  }, [rowsLimit, foods?.length]);
 
   const handleClickCloseButton = (e) => {
     e.preventDefault();
@@ -58,36 +59,73 @@ const FoodsTable = () => {
     setSearchFood(e.target.value);
   };
 
+  // useEffect(() => {
+  //   const fetchfoods = async () => {
+  //     const endpoint =
+  //       activeCollection === "recipes" ? "/api/recipes" : "/api/ingredients";
+  //     try {
+  //       const response = await fetch(`${apiUrl}${endpoint}`);
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setfoods(data);
+  //       } else {
+  //         console.log("Veri çekme hatasi");
+  //       }
+  //     } catch (error) {
+  //       console.log("Çekme hatasi", error);
+  //     }
+  //   };
+  //   fetchfoods();
+  // }, [apiUrl, activeCollection]);
+
   useEffect(() => {
-    const fetchIngredients = async () => {
+    const fetchFoods = async () => {
       const endpoint =
-        activeCollection === "recipes" ? "/api/ingredients" : "/api/recipes";
+        activeCollection === "recipes"
+          ? `/api/recipes?category=${
+              activeTab !== "Hepsi" ? activeTab : ""
+            }&search=${searchFood}`
+          : `/api/ingredients?search=${searchFood}&nutrient=${selectedNutrient}`;
       try {
         const response = await fetch(`${apiUrl}${endpoint}`);
         if (response.ok) {
           const data = await response.json();
-          setIngredients(data);
+          setFoods(data);
+          setCurrentPage(0);
         } else {
-          console.log("Veri çekme hatasi");
+          console.log("Veri çekme hatası");
         }
       } catch (error) {
-        console.log("Çekme hatasi", error);
+        console.log("Çekme hatası", error);
       }
     };
-    fetchIngredients();
-  }, [apiUrl, activeCollection]);
+    fetchFoods();
+    setCurrentPage(0);
+  }, [
+    apiUrl,
+    activeCollection,
+    activeTab,
+    activeType,
+    searchFood,
+    selectedNutrient,
+  ]);
 
   useEffect(() => {
     // rowsToShow değerini güncelle
     const startIndex = currentPage * rowsLimit;
     const endIndex = startIndex + rowsLimit;
-    const newArray = ingredients.slice(startIndex, endIndex);
+    const newArray = foods.slice(startIndex, endIndex);
     setRowsToShow(newArray);
 
     // totalPage değerini güncelle
-    const newTotalPage = Math.ceil(ingredients.length / rowsLimit);
+    const newTotalPage = Math.ceil(foods.length / rowsLimit);
     setTotalPage(newTotalPage);
-  }, [ingredients, currentPage, rowsLimit]);
+  }, [foods, currentPage, rowsLimit]);
+
+  const getUnit = (nutrient) => {
+    const mgNutrients = ["Sodium", "Potassium", "Cholesterol"];
+    return mgNutrients.includes(nutrient) ? "mg" : "g";
+  };
 
   return (
     <>
@@ -97,7 +135,7 @@ const FoodsTable = () => {
         nextPage={nextPage}
         changePage={changePage}
         previousPage={previousPage}
-        ingredients={ingredients}
+        foods={foods}
         currentPage={currentPage}
         rowsLimit={rowsLimit}
       />
@@ -116,7 +154,7 @@ const FoodsTable = () => {
                   <input
                     type="text"
                     id="default-search"
-                    className="block w-52 p-2 mt-4 mb-4 mx-auto pl-4 text-xl text-black border border-gray-300 rounded-lg bg-white focus:ring-green-500 focus:border-green-500 dark:white dark:border-gray-600 dark:placeholder-black dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500 "
+                    className="block w-52 p-2 mt-4 mb-4 mx-auto pl-4 text-xl text-black border border-gray-300 rounded-lg bg-white focus:ring-green-500 focus:border-green-500 dark:white dark:border-gray-600 dark:placeholder-black dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500"
                     placeholder="Besin Ara..."
                     value={searchFood}
                     onChange={handleInputChange}
@@ -129,52 +167,151 @@ const FoodsTable = () => {
                   </button>
                 </div>
               </form>
+
               <div className="p-3">
                 <p className="text-3xl">Tür</p>
                 <ul className="mt-4 mb-4 ml-2 text-green-500 ">
                   <li
-                    className="mb-3 hover:text-green-700 cursor-pointer"
-                    onClick={() => setActiveCollection("ingredients")}
+                    className={`mb-3 hover:text-green-700 cursor-pointer ${
+                      activeType === "recipes"
+                        ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setActiveCollection("recipes");
+                      setActiveType("recipes");
+                      setShowCategories(true);
+                      setActiveTab("Hepsi");
+                    }}
                   >
                     Tarifler
                   </li>
                   <li
-                    className="mb-3 hover:text-green-700 cursor-pointer"
-                    onClick={() => setActiveCollection("recipes")}
+                    className={`mb-3 hover:text-green-700 cursor-pointer ${
+                      activeType === "ingredients"
+                        ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                        : ""
+                    }`}
+                    onClick={() => {
+                      setActiveCollection("ingredients");
+                      setActiveType("ingredients");
+                      setShowCategories(false);
+                    }}
                   >
                     Temel Besinler
                   </li>
                 </ul>
-                <p className="text-3xl">Kategori</p>
-                <ul className="mt-2 ml-2 text-green-500">
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Hepsi
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Ana Yemekler
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Çorbalar
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Et Yemekleri
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    İçecekler
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Kahvaltı
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Makarna
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Salatalar
-                  </li>
-                  <li className="mb-3 hover:text-green-700 cursor-pointer">
-                    Tatlılar
-                  </li>
-                </ul>
+                {showCategories && (
+                  <>
+                    <p className="text-3xl">Kategori</p>
+                    <ul className="mt-2 ml-2 text-green-500">
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Hepsi"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Hepsi");
+                        }}
+                      >
+                        Hepsi
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Ana_Yemekler"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Ana_Yemekler");
+                        }}
+                      >
+                        Ana Yemekler
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Çorbalar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Çorbalar");
+                        }}
+                      >
+                        Çorbalar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Et_Yemekleri"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Et_Yemekleri");
+                        }}
+                      >
+                        Et Yemekleri
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Kahvaltılıklar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Kahvaltılıklar");
+                        }}
+                      >
+                        Kahvaltılıklar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Makarnalar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Makarnalar");
+                        }}
+                      >
+                        Makarnalar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Salatalar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Salatalar");
+                        }}
+                      >
+                        Salatalar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Tatlılar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("recipes");
+                          setActiveTab("Tatlılar");
+                        }}
+                      >
+                        Tatlılar
+                      </li>
+                    </ul>
+                  </>
+                )}
               </div>
             </div>
             <table className="table-auto overflow-scroll md:overflow-auto w-full   text-left font-inter border ">
@@ -198,8 +335,23 @@ const FoodsTable = () => {
                   <th className="px-3 py-1 text-green-500 w-1/12 sm:text-base font-bold border-2 border-gray-300">
                     Protein
                   </th>
-                  <th className="px-3 py-1 text-green-500 w-3/12 sm:text-base font-bold border-2 border-gray-300 ">
+                  {/* <th className="px-3 py-1 text-green-500 w-3/12 sm:text-base font-bold border-2 border-gray-300 ">
                     Lif
+                  </th> */}
+                  <th className="px-3 py-1 text-green-500 w-3/12 sm:text-base font-bold border-2 border-gray-300">
+                    <select
+                      className="bg-transparent"
+                      value={selectedNutrient}
+                      onChange={(e) => setSelectedNutrient(e.target.value)}
+                    >
+                      <option value="Fiber">Lif</option>
+                      <option value="Cholesterol">Kolesterol</option>
+                      <option value="Fat">Yağ</option>
+                      <option value="Potassium">Potasyum</option>
+                      <option value="Saturated_Fat">Doymuş Yağ</option>
+                      <option value="Sodium">Sodyum</option>
+                      <option value="Sugar">Şeker</option>
+                    </select>
                   </th>
                 </tr>
               </thead>
@@ -220,10 +372,15 @@ const FoodsTable = () => {
                       />
                     </td>
                     <td
-                      className={` text-green-600 font-semibold py-2 px-3 w-2/12 text-base border-b-2 whitespace-nowrap`}
+                      className={`text-green-600 font-semibold py-2 px-3 w-2/12 text-base border-b-2 whitespace-nowrap`}
                     >
-                      {food?.Turkish_Name.charAt(0).toUpperCase() +
-                        food?.Turkish_Name.slice(1)}
+                      <Link
+                        to={`/food/${food._id}`}
+                        className="text-green-600 font-semibold no-underline hover:underline"
+                      >
+                        {food?.Turkish_Name.charAt(0).toUpperCase() +
+                          food?.Turkish_Name.slice(1)}
+                      </Link>
                     </td>
                     <td
                       className={`py-2 pl-6 w-2/12 font-normal text-base border-b-2 whitespace-nowrap`}
@@ -248,7 +405,7 @@ const FoodsTable = () => {
                     <td
                       className={`py-5 pl-6 text-base font-normal w-3/12 border-b-2`}
                     >
-                      {food?.Fiber + " g"}
+                      {food[selectedNutrient] + " " + getUnit(selectedNutrient)}
                     </td>
                   </tr>
                 ))}
@@ -261,7 +418,7 @@ const FoodsTable = () => {
             nextPage={nextPage}
             changePage={changePage}
             previousPage={previousPage}
-            ingredients={ingredients}
+            foods={foods}
             currentPage={currentPage}
             rowsLimit={rowsLimit}
           />
