@@ -59,25 +59,6 @@ const FoodsTable = () => {
     setSearchFood(e.target.value);
   };
 
-  // useEffect(() => {
-  //   const fetchfoods = async () => {
-  //     const endpoint =
-  //       activeCollection === "recipes" ? "/api/recipes" : "/api/ingredients";
-  //     try {
-  //       const response = await fetch(`${apiUrl}${endpoint}`);
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setfoods(data);
-  //       } else {
-  //         console.log("Veri çekme hatasi");
-  //       }
-  //     } catch (error) {
-  //       console.log("Çekme hatasi", error);
-  //     }
-  //   };
-  //   fetchfoods();
-  // }, [apiUrl, activeCollection]);
-
   useEffect(() => {
     const fetchFoods = async () => {
       const endpoint =
@@ -111,13 +92,10 @@ const FoodsTable = () => {
   ]);
 
   useEffect(() => {
-    // rowsToShow değerini güncelle
     const startIndex = currentPage * rowsLimit;
     const endIndex = startIndex + rowsLimit;
     const newArray = foods.slice(startIndex, endIndex);
     setRowsToShow(newArray);
-
-    // totalPage değerini güncelle
     const newTotalPage = Math.ceil(foods.length / rowsLimit);
     setTotalPage(newTotalPage);
   }, [foods, currentPage, rowsLimit]);
@@ -335,9 +313,6 @@ const FoodsTable = () => {
                   <th className="px-3 py-1 text-green-500 w-1/12 sm:text-base font-bold border-2 border-gray-300">
                     Protein
                   </th>
-                  {/* <th className="px-3 py-1 text-green-500 w-3/12 sm:text-base font-bold border-2 border-gray-300 ">
-                    Lif
-                  </th> */}
                   <th className="px-3 py-1 text-green-500 w-3/12 sm:text-base font-bold border-2 border-gray-300">
                     <select
                       className="bg-transparent"

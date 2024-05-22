@@ -8,14 +8,16 @@ const FoodRecipeArticle = () => {
       </div>
       <div className="food-info mt-6 mb-10 max-w-4xl bg-green-700 text-slate-100 p-6 rounded-xl">
         <p>
-          Beslenme rutininizde monotonluktan sıkıldıysanız ve diyetinizi daha
-          renkli ve eğlenceli bir hale getirmek istiyorsanız, Besin Arama
-          hizmetimiz tam size göre! Count&Eat olarak, çeşit çeşit besinler ve
-          onlara ait nefis tarifler sunuyoruz. İstediğiniz zaman besinlerin
-          mikro ve makro besin değerlerini inceleyebilir, birbirinden farklı
-          yemek tariflerine göz atabilir ve böylece diyetinizi daha bilinçli ve
-          kontrollü bir şekilde yönetebilirsiniz. Count&Eat ile yemeklerinizi
-          keşfetmenin keyfini çıkarın!
+          Bir beslenme tarzına ya da bir diyete odaklandığınızda yediğiniz
+          yiyeceklerin besin değerlerini bilmek önemlidir. Count&Eat, kolayca
+          kullanılabilir bir veritabanı sağlayarak bu süreçteki zorlukları
+          ortadan kaldırır. Bu besin veritabanı, tüm yiyecekleri farklı
+          kategorilere göre sıralamanıza ve besin değerini &quot;100 g
+          başına&quot; görüntüleyerek makro ve mikroları analiz etmenize olanak
+          tanır. Aynı zamanda sizlere çeşit çeşit besinler ve onlara ait nefis
+          tarifler göstererek beslenme rutininizde oluşan monotonluktan sizi
+          kurtarır, diyetinizi daha renkli hale getirir. Count&Eat ile
+          yemeklerinizi keşfetmenin keyfini çıkarın!
         </p>
       </div>
     </div>

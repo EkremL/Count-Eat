@@ -6,8 +6,6 @@ const SingleFoodPage = () => {
   const { id: recipeId } = useParams();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [singleRecipe, setSingleRecipe] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // FETCH SINGLE FOOD
   useEffect(() => {
@@ -20,21 +18,12 @@ const SingleFoodPage = () => {
         const data = await response.json();
         setSingleRecipe(data);
       } catch (error) {
-        setError("Veri çekme hatası: " + error.message);
-      } finally {
-        setLoading(false);
+        console.log();
+        "Veri çekme hatası: " + error.message;
       }
     };
     fetchSingleRecipe();
   }, [apiUrl, recipeId]);
-
-  if (loading) {
-    return <div>Yükleniyor...</div>;
-  }
-
-  if (error) {
-    return <div>Hata: {error}</div>;
-  }
 
   return (
     <>

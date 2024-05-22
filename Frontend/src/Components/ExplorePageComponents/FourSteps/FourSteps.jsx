@@ -79,10 +79,13 @@ const FourSteps = () => {
       </div>
       <div className="information">
         <b>Bilgi Köşesi</b> <br />
-        “Yapılan bağımsız bir çalışma, insanların diyet programlarını
-        benimsemelerinde ve bu programlara uzun süre bağlı kalmalarında, önceden
-        planlanmış yemek programları ve alışveriş listelerinin kritik öneme
-        sahip olduğunu ortaya koymuştur.”
+        “Yapılan{" "}
+        <a href="https://europepmc.org/article/med/8788323" target="_blank">
+          bağımsız bir çalışma
+        </a>
+        , insanların diyet programlarını benimsemelerinde ve bu programlara uzun
+        süre bağlı kalmalarında, önceden planlanmış yemek programları ve
+        alışveriş listelerinin kritik öneme sahip olduğunu ortaya koymuştur.”
       </div>
     </div>
   );
