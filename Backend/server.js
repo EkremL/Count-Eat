@@ -5,12 +5,17 @@ const app = express();
 const port = 5000;
 const logger = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const { requireAuth, checkUser } = require("./middlewares/authMiddleware");
+const authController = require("./controllers/authController");
 
 //!config
 dotenv.config();
 
-//!MainRoute import
+//!Route imports
 const MainRoute = require("./Routes/index.js");
+const authRoutes = require("./Routes/authRoutes.js");
+const adminRoutes = require("./Routes/adminRoutes.js");
 
 //!database connection
 const connect = async () => {
@@ -18,18 +23,30 @@ const connect = async () => {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to MongoDB");
   } catch (error) {
-    console.log("Error connecting to MongoDB");
+    console.error("Error connecting to MongoDB", error);
   }
 };
 
-//!MiddleWares
+app.set("view engine", "ejs");
+
+//!Middlewares
 app.use(logger("dev"));
-app.use(express.json());
 app.use(cors());
+app.use(express.static("public"));
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.get("*", checkUser);
 
 app.use("/api", MainRoute);
+app.use("/", authRoutes);
+app.use("/admin", requireAuth, adminRoutes);
+
+//! Auth Routes
+app.post("/signup", authController.signup_post);
 
 app.listen(port, () => {
   connect();
-  console.log(`Server ${port} portunda çalısıyor.`);
+  console.log(`Server ${port} portunda çalışıyor.`);
 });
