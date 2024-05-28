@@ -14,6 +14,7 @@ import SupportPage from "./Pages/SupportPage";
 import TermsOfUsePage from "./Pages/TermsOfUsePage";
 import RegisterPage from "./Pages/RegisterPage";
 import SingleFoodPage from "./Pages/SingleFoodPage";
+import SingleBlogPage from "./Pages/SingleBlogPage";
 import "./App.css";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/blogs" element={<BlogPage />} />
+        <Route path="blogs/:id" element={<SingleBlogPage />} />
         <Route path="/diettypes" element={<DietTypesPage />} />
         <Route path="/dmca" element={<DMCAPage />} />
         <Route path="/explore" element={<ExplorePage />} />

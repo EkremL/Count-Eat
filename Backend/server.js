@@ -8,7 +8,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { requireAuth, checkUser } = require("./middlewares/authMiddleware");
 const authController = require("./controllers/authController");
-
+const blogs = require("./api/blogsData.json");
 //!config
 dotenv.config();
 
@@ -38,6 +38,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("*", checkUser);
+app.get("/blogs", (req, res) => {
+  res.send(blogs);
+});
+app.get("/blogs/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const blog = blogs.find((b) => b.id === id);
+  if (blog) {
+    res.json([blog]);
+  } else {
+    res.status(404).send({ error: "Blog not found" });
+  }
+});
 
 app.use("/api", MainRoute);
 app.use("/", authRoutes);
