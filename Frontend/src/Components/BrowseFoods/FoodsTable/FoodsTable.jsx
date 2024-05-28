@@ -66,7 +66,9 @@ const FoodsTable = () => {
           ? `/api/recipes?category=${
               activeTab !== "Hepsi" ? activeTab : ""
             }&search=${searchFood}`
-          : `/api/ingredients?search=${searchFood}&nutrient=${selectedNutrient}`;
+          : `/api/ingredients?category=${
+              activeTab !== "Hepsi" ? activeTab : ""
+            }&search=${searchFood}&nutrient=${selectedNutrient}`;
       try {
         const response = await fetch(`${apiUrl}${endpoint}`);
         if (response.ok) {
@@ -179,7 +181,7 @@ const FoodsTable = () => {
                     Temel Besinler
                   </li>
                 </ul>
-                {showCategories && (
+                {showCategories ? (
                   <>
                     <p className="text-3xl">Kategori</p>
                     <ul className="mt-2 ml-2 text-green-500">
@@ -287,6 +289,221 @@ const FoodsTable = () => {
                       >
                         Tatlılar
                       </li>
+                      :
+                    </ul>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-3xl">Kategori</p>
+                    <ul className="mt-2 ml-2 text-green-500">
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Hepsi"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Hepsi");
+                        }}
+                      >
+                        Hepsi
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Süt_ürünleri"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Süt_ürünleri");
+                        }}
+                      >
+                        Süt Ürünleri
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Baharatlar_otlar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Baharatlar_otlar");
+                        }}
+                      >
+                        Baharatlar ve Otlar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Yağlar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Yağlar");
+                        }}
+                      >
+                        Yağlar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Kümes_hayvanları"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Kümes_hayvanları");
+                        }}
+                      >
+                        Kümes Hayvanları
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Çorbalar_soslar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Çorbalar_soslar");
+                        }}
+                      >
+                        Çorbalar ve Soslar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Şarküteri"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Şarküteri");
+                        }}
+                      >
+                        Şarküteri
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Kahvaltılıkgevrekler_yulaflar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Kahvaltılıkgevrekler_yulaflar");
+                        }}
+                      >
+                        Kahvaltılık Gevrekler ve Yulaflar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Meyve_sebzeler"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Meyve_sebzeler");
+                        }}
+                      >
+                        Meyve ve Sebzeler
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Kuruyemişler"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Kuruyemişler");
+                        }}
+                      >
+                        Kuruyemişler
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Et_ürünleri"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Et_ürünleri");
+                        }}
+                      >
+                        Et Ürünleri
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "İçecekler"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("İçecekler");
+                        }}
+                      >
+                        İçecekler
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Deniz_ürünleri"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Deniz_ürünleri");
+                        }}
+                      >
+                        Deniz Ürünleri
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Baklagiller"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Baklagiller");
+                        }}
+                      >
+                        Baklagiller
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Buğdaylar_makarnalar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Buğdaylar_makarnalar");
+                        }}
+                      >
+                        Buğdaylar ve Makarnalar
+                      </li>
+                      <li
+                        className={`mb-3 hover:text-green-700 cursor-pointer ${
+                          activeTab === "Tatlılar"
+                            ? "bg-green-700 text-slate-200 py-1 px-2 hover:text-slate-50 rounded-lg"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          setActiveCollection("ingredients");
+                          setActiveTab("Tatlılar");
+                        }}
+                      >
+                        Tatlılar
+                      </li>
                     </ul>
                   </>
                 )}
@@ -321,7 +538,6 @@ const FoodsTable = () => {
                     >
                       <option value="Fiber">Lif</option>
                       <option value="Cholesterol">Kolesterol</option>
-                      <option value="Fat">Yağ</option>
                       <option value="Potassium">Potasyum</option>
                       <option value="Saturated_Fat">Doymuş Yağ</option>
                       <option value="Sodium">Sodyum</option>

@@ -3,11 +3,19 @@ const router = express.Router();
 const Recipe = require("../Models/Recipe.js");
 
 router.get("/", async (req, res) => {
-  const { calories, meals } = req.query;
+  const { calories, meals, genre } = req.query;
   const maxCalories = parseInt(calories, 10) + 30;
 
   try {
-    const allRecipes = await Recipe.find({});
+    let allRecipes;
+    if (genre === "normal") {
+      // "Normal" seçeneği seçildiğinde tüm tarifleri alıyoruz
+      allRecipes = await Recipe.find({});
+    } else {
+      // Belirtilen genre'ye göre tarifleri alıyoruz
+      allRecipes = await Recipe.find({ Genre: genre });
+    }
+
     const selectedRecipes = [];
     let totalCalories = 0;
 

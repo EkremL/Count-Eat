@@ -2,18 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Ingredient = require("../Models/Ingredient.js");
 
-//! Get (Read All)
-// router.get("/", async (req, res) => {
-//   try {
-//     const ingredients = await Ingredient.find();
-
-//     res.status(200).json(ingredients);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send({ error: "Server Error" });
-//   }
-// });
-
 //! Get (Read All or by Ingredient) and Dynamic Search
 router.get("/", async (req, res) => {
   const category = req.query.category;
@@ -23,7 +11,7 @@ router.get("/", async (req, res) => {
     filter.MainCategory = category;
   }
   if (search) {
-    filter.Turkish_Name = { $regex: search, $options: "i" }; // Arama metnini içeren Türkçe isimler
+    filter.Turkish_Name = { $regex: search, $options: "i" };
   }
   try {
     const ingredients = await Ingredient.find(filter);
@@ -33,5 +21,3 @@ router.get("/", async (req, res) => {
     res.status(500).send({ error: "Server Error" });
   }
 });
-
-module.exports = router;

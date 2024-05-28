@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     filter.MainCategory = category;
   }
   if (search) {
-    filter.Turkish_Name = { $regex: search, $options: "i" }; // Arama metnini içeren Türkçe isimler
+    filter.Turkish_Name = { $regex: search, $options: "i" };
   }
   try {
     const recipes = await Recipe.find(filter);
