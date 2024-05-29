@@ -21,3 +21,5 @@ router.get("/", async (req, res) => {
     res.status(500).send({ error: "Server Error" });
   }
 });
+
+module.exports = router;
