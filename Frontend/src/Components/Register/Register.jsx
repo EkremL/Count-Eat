@@ -1,54 +1,52 @@
-import { useState } from "react";
+import { useFormik } from "formik";
 import { Link } from "react-router-dom";
+import { basicSchema } from "../../Schemas";
 import "./Register.css";
 
-const Register = () => {
+const onSubmit = async (values, actions) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    passwordConfirm: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+  try {
+    const response = await fetch(`${apiUrl}/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { username, email, password, passwordConfirm } = formData;
-
-    if (password !== passwordConfirm) {
-      alert("Şifreler uyuşmuyor.");
-      return;
+    const data = await response.json();
+    if (response.ok) {
+      alert("Kayıt başarılı!");
+      actions.resetForm();
+    } else {
+      alert(data.message || "Kayıt başarısız.");
     }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Bir hata oluştu.");
+  }
+};
 
-    try {
-      const response = await fetch(`${apiUrl}/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, password }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        alert("Kayıt başarılı!");
-        // Redirect to login page or other action
-      } else {
-        alert(data.message || "Kayıt başarısız.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Bir hata oluştu.");
-    }
-  };
+const Register = () => {
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+  } = useFormik({
+    initialValues: {
+      username: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
+    validationSchema: basicSchema,
+    onSubmit,
+  });
 
   return (
     <>
@@ -65,18 +63,34 @@ const Register = () => {
                     htmlFor="username"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    İsim
+                    Kullanıcı Adı
                   </label>
                   <input
                     type="text"
                     name="username"
                     id="username"
-                    placeholder="İsim"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    placeholder="John Doe"
+                    className={`bg-gray-50 border ${
+                      errors.username && touched.username
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 ${
+                      errors.username && touched.username
+                        ? "focus:border-red-500"
+                        : "focus:border-primary-600"
+                    } block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ${
+                      errors.username && touched.username
+                        ? "dark:focus:ring-red-500"
+                        : "dark:focus:ring-green-500"
+                    }`}
                     required
-                    value={formData.username}
+                    value={values.username}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.username && touched.username && (
+                    <p className="text-red-500">{errors.username}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -89,12 +103,28 @@ const Register = () => {
                     type="email"
                     name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    className={`bg-gray-50 border ${
+                      errors.email && touched.email
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 ${
+                      errors.email && touched.email
+                        ? "focus:border-red-500"
+                        : "focus:border-primary-600"
+                    } block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ${
+                      errors.email && touched.email
+                        ? "dark:focus:ring-red-500"
+                        : "dark:focus:ring-green-500"
+                    }`}
                     placeholder="name@company.com"
                     required
-                    value={formData.email}
+                    value={values.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.email && touched.email && (
+                    <p className="text-red-500">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -108,11 +138,27 @@ const Register = () => {
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    className={`bg-gray-50 border ${
+                      errors.password && touched.password
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 ${
+                      errors.password && touched.password
+                        ? "focus:border-red-500"
+                        : "focus:border-primary-600"
+                    } block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ${
+                      errors.password && touched.password
+                        ? "dark:focus:ring-red-500"
+                        : "dark:focus:ring-green-500"
+                    }`}
                     required
-                    value={formData.password}
+                    value={values.password}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.password && touched.password && (
+                    <p className="text-red-500">{errors.password}</p>
+                  )}
                 </div>
                 <div>
                   <label
@@ -126,14 +172,31 @@ const Register = () => {
                     name="passwordConfirm"
                     id="passwordConfirm"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    className={`bg-gray-50 border ${
+                      errors.passwordConfirm && touched.passwordConfirm
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 ${
+                      errors.passwordConfirm && touched.passwordConfirm
+                        ? "focus:border-red-500"
+                        : "focus:border-primary-600"
+                    } block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ${
+                      errors.passwordConfirm && touched.passwordConfirm
+                        ? "dark:focus:ring-red-500"
+                        : "dark:focus:ring-green-500"
+                    }`}
                     required
-                    value={formData.passwordConfirm}
+                    value={values.passwordConfirm}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                   />
+                  {errors.passwordConfirm && touched.passwordConfirm && (
+                    <p className="text-red-500">{errors.passwordConfirm}</p>
+                  )}
                 </div>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   Kayıt ol

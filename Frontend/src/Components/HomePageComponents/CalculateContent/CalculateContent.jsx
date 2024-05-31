@@ -1,5 +1,4 @@
 import Arrow from "../../../Assets/HomePageImages/CalculateImg/greenuparrow.png";
-import "./CalculateContent.css";
 import Normal from "../../../Assets/HomePageImages/CalculateImg/normal.png";
 import Paleo from "../../../Assets/HomePageImages/CalculateImg/paleo.png";
 import Vejetaryen from "../../../Assets/HomePageImages/CalculateImg/vejeteryan.png";
@@ -8,6 +7,8 @@ import Keto from "../../../Assets/HomePageImages/CalculateImg/ketojenik.png";
 import Akdeniz from "../../../Assets/HomePageImages/CalculateImg/akdeniz.png";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { message } from "antd";
+import "./CalculateContent.css";
 
 const CalculateContent = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -42,6 +43,12 @@ const CalculateContent = () => {
     const selectedGenre = genres[activeIndex];
 
     try {
+      if (calories == 0 || meals == 0) {
+        message.warning("Girilen kalori veya öğün sayısı 0 olamaz!");
+        setMealPlan([]);
+        return;
+      }
+
       const response = await fetch(
         `${apiUrl}/api/meals?calories=${calories}&meals=${meals}&genre=${selectedGenre}`
       );
@@ -113,7 +120,7 @@ const CalculateContent = () => {
                 <div className="md:flex md:items-center mb-6">
                   <div className="md:w-1/3">
                     <label
-                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      className="block text-green-700 text-lg font-extrabold md:text-right mb-1 md:mb-0 pr-4"
                       htmlFor="calorie"
                     >
                       Kalori Sayısı
@@ -132,7 +139,7 @@ const CalculateContent = () => {
                 <div className="md:flex md:items-center mb-6">
                   <div className="md:w-1/3">
                     <label
-                      className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                      className="block text-green-700 text-xl font-extrabold md:text-right mb-1 md:mb-0 pr-4"
                       htmlFor="meal"
                     >
                       Öğün
@@ -164,6 +171,12 @@ const CalculateContent = () => {
               </form>
             </div>
           </div>
+          {/* {calories == 0 ||
+            (meals == 0 && (
+              <div>
+                {message.warning("Girilen kalori veya öğün sayısı 0 olamaz!")}
+              </div>
+            ))} */}
           {mealPlan.length > 0 && (
             <div className="meal-plan mt-8">
               {mealPlan.map((meal, index) => (
