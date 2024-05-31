@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
-import { basicSchema } from "../../Schemas";
 import "./Register.css";
+import { basicSchema } from "../../Schemas"; // Validation şemanız burada olmalı
 
 const onSubmit = async (values, actions) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -19,6 +19,7 @@ const onSubmit = async (values, actions) => {
     if (response.ok) {
       alert("Kayıt başarılı!");
       actions.resetForm();
+      // Redirect to login page or other action
     } else {
       alert(data.message || "Kayıt başarısız.");
     }
@@ -44,7 +45,7 @@ const Register = () => {
       password: "",
       passwordConfirm: "",
     },
-    validationSchema: basicSchema,
+    validationSchema: basicSchema, // Validation şemanız burada olmalı
     onSubmit,
   });
 
