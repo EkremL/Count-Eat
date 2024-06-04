@@ -72,19 +72,42 @@ const signup_post = async (req, res) => {
   const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
   try {
-    await sendVerificationEmail(email, verificationCode);
-    const user = new User({ username, email, password, verificationCode });
-    await user.save();
-    res.status(201).json({ message: "Kayıt başarılı!" });
+    const user = await User.create({
+      username,
+      email,
+      password,
+      verificationCode,
+      isVerified: false,
+    });
+
+    await sendVerificationEmail(user.email, verificationCode);
+
+    res.status(201).json({ user: user._id, email: user.email });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: "Kayıt başarısız." });
+    console.error(error);
+    res.status(400).json({ message: "Error creating user" });
+  }
+};
+
+const verify_post = async (req, res) => {
+  const { verificationCode } = req.body;
+
+  try {
+    const user = await User.findOne({ verificationCode });
+    if (user) {
+      res.status(200).json({ message: "Doğrulama başarılı!" });
+    } else {
+      res.status(400).json({ message: "Geçersiz doğrulama kodu." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Sunucu hatası." });
   }
 };
 
 const logout_get = (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.redirect("/login");
+  res.redirect("/");
 };
 
 module.exports = {
@@ -92,6 +115,6 @@ module.exports = {
   login_post,
   signup_get,
   signup_post,
+  verify_post,
   logout_get,
-  sendVerificationEmail,
 };

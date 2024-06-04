@@ -1,19 +1,55 @@
-import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 const Verify = () => {
   const inputRefs = useRef([]);
+  const [verificationCode, setVerificationCode] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e, index) => {
     const value = e.target.value;
+    setVerificationCode((prevCode) => {
+      const newCode = prevCode.split("");
+      newCode[index] = value;
+      return newCode.join("");
+    });
+
     if (value.length === 1 && index < inputRefs.current.length - 1) {
       inputRefs.current[index + 1].focus();
     }
   };
 
   const handleClear = () => {
+    setVerificationCode("");
     inputRefs.current.forEach((input) => (input.value = ""));
     inputRefs.current[0].focus();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+    try {
+      const response = await fetch(`${apiUrl}/verify`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ verificationCode }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        message.success("Giriş başarılı!");
+        navigate("/");
+      } else {
+        message.error(data.message || "Bir hata oluştu.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      message.error("Bir hata oluştu.");
+    }
   };
 
   return (
@@ -25,7 +61,7 @@ const Verify = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight mb-16 text-gray-900 md:text-2xl dark:text-white flex justify-center">
                 Doğrulama Kodu
               </h1>
-              <form className="space-y-4 md:space-y-6">
+              <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                 <div className="flex justify-center space-x-2">
                   {[...Array(6)].map((_, index) => (
                     <input

@@ -4,46 +4,49 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
-    unique: true,
+    required: [true, "Please enter a username"],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Please enter an email"],
     unique: true,
   },
   password: {
     type: String,
-    required: true,
+    required: [true, "Please enter a password"],
+    minlength: [6, "Minimum password length is 6 characters"],
   },
   verificationCode: {
-    type: Number,
-    required: true,
+    type: String,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
   },
 });
 
-userSchema.statics.login = async function (identifier, password) {
-  const user = await this.findOne({
-    $or: [{ username: identifier }, { email: identifier }],
-  });
+// Hash the password before saving to the database
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  next();
+});
+
+// Static method to login user
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
       return user;
-    } else {
-      throw Error("Parolanız yanlış.");
     }
-  } else {
-    throw Error("Kullanıcı bulunamadı.");
+    throw Error("incorrect password");
   }
+  throw Error("incorrect email");
 };
 
-userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+const User = mongoose.model("User", userSchema);
 
-const User = mongoose.model("user", userSchema);
-
-module.exports = mongoose.model("User", userSchema);
+module.exports = User;
