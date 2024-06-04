@@ -1,35 +1,36 @@
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
-import "./Register.css";
+import { Link, useNavigate } from "react-router-dom";
 import { basicSchema } from "../../Schemas"; // Validation şemanız burada olmalı
-
-const onSubmit = async (values, actions) => {
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
-
-  try {
-    const response = await fetch(`${apiUrl}/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      alert("Kayıt başarılı!");
-      actions.resetForm();
-      // Redirect to login page or other action
-    } else {
-      alert(data.message || "Kayıt başarısız.");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Bir hata oluştu.");
-  }
-};
+import "./Register.css";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const onSubmit = async (values, actions) => {
+    const apiUrl = import.meta.env.VITE_API_BASE_URL;
+    try {
+      const response = await fetch(`${apiUrl}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Kayıt başarılı!");
+        actions.resetForm();
+        navigate("/verify");
+      } else {
+        alert(data.message || "Kayıt başarısız.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Bir hata oluştu.");
+    }
+  };
+
   const {
     values,
     errors,

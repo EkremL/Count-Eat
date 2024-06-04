@@ -16,6 +16,7 @@ import RegisterPage from "./Pages/RegisterPage";
 import SingleFoodPage from "./Pages/SingleFoodPage";
 import SingleBlogPage from "./Pages/SingleBlogPage";
 import "./App.css";
+import VerificationPage from "./Pages/VerificationPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/aboutus" element={<AboutUsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/verify" element={<VerificationPage />} />
         <Route path="/blogs" element={<BlogPage />} />
         <Route path="/blog/:id" element={<SingleBlogPage />} />
         <Route path="/diettypes" element={<DietTypesPage />} />
