@@ -19,7 +19,7 @@ const Register = () => {
 
       const data = await response.json();
       if (response.ok) {
-        alert("Kayıt başarılı!");
+        localStorage.setItem("isRegistered", "true");
         actions.resetForm();
         navigate("/verify");
       } else {
@@ -46,7 +46,7 @@ const Register = () => {
       password: "",
       passwordConfirm: "",
     },
-    validationSchema: basicSchema, // Validation şemanız burada olmalı
+    validationSchema: basicSchema,
     onSubmit,
   });
 

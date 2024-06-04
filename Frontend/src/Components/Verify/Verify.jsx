@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { message } from "antd";
 
@@ -6,6 +6,11 @@ const Verify = () => {
   const inputRefs = useRef([]);
   const [verificationCode, setVerificationCode] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Sayfa yüklendiğinde erişim izni temizle
+    localStorage.removeItem("isRegistered");
+  }, []);
 
   const handleChange = (e, index) => {
     const value = e.target.value;
