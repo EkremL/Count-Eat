@@ -15,7 +15,7 @@ const Header = () => {
     if (token) {
       setIsAuthenticated(true);
     }
-  }, []);
+  }, []); // No changes here
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);

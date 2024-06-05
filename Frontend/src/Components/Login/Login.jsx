@@ -1,7 +1,6 @@
-// Login.js
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
 import "./Login.css";
 
 const Login = () => {
@@ -23,7 +22,9 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("token", data.token); // Added to save token
         navigate("/");
+        message.success("Giriş başarılı!");
       } else {
         setError(data.message);
       }
