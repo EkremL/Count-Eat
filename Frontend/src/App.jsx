@@ -19,7 +19,7 @@ import VerificationPage from "./Pages/VerificationPage";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import "./App.css";
 
-function App() {
+const App = () => {
   return (
     <>
       <Routes>
@@ -51,6 +51,6 @@ function App() {
       </Routes>
     </>
   );
-}
+};
 
 export default App;

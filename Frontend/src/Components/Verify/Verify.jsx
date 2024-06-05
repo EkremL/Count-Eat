@@ -8,7 +8,6 @@ const Verify = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Sayfa yüklendiğinde erişim izni temizle
     localStorage.removeItem("isRegistered");
   }, []);
 
@@ -46,6 +45,7 @@ const Verify = () => {
 
       const data = await response.json();
       if (response.ok) {
+        localStorage.setItem("token", data.token);
         message.success("Giriş başarılı!");
         navigate("/");
       } else {

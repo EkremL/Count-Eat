@@ -1,12 +1,21 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
 import Logo from "../../../Assets/Logo/logo.png";
 import "./Header.css";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -14,6 +23,12 @@ const Header = () => {
 
   const closeMenu = () => {
     setIsOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate("/");
   };
 
   return (
@@ -78,19 +93,31 @@ const Header = () => {
               isOpen ? "open" : ""
             } flex flex-col justify-center items-center`}
           >
-            <button>
-              <Link to="/register" className="login ">
-                KAYIT OL
-              </Link>
-            </button>
-            <p className="Already mt-1 hover:underline text-green-600">
-              <Link
-                className="Already-text text-green-600 font-semibold text-sm"
-                to={"/login"}
-              >
-                Zaten üye misiniz? Giriş yapın.
-              </Link>
-            </p>
+            {isAuthenticated ? (
+              <>
+                <AiOutlineUser className="text-white text-2xl cursor-pointer" />
+                <AiOutlineLogout
+                  className="text-white text-2xl cursor-pointer mt-2"
+                  onClick={handleLogout}
+                />
+              </>
+            ) : (
+              <>
+                <button>
+                  <Link to="/register" className="login ">
+                    KAYIT OL
+                  </Link>
+                </button>
+                <p className="Already mt-1 hover:underline text-green-600">
+                  <Link
+                    className="Already-text text-green-600 font-semibold text-sm"
+                    to="/login"
+                  >
+                    Zaten üye misiniz? Giriş yapın.
+                  </Link>
+                </p>
+              </>
+            )}
           </div>
         </nav>
       </div>

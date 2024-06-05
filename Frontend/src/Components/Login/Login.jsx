@@ -23,8 +23,6 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        // Giriş başarılı, yönlendirme vb. işlemler yapılabilir
-        alert("Giriş başarılı");
         navigate("/");
       } else {
         setError(data.message);
