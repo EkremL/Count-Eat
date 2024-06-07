@@ -3,12 +3,9 @@ import Superman from "../../../Assets/HomePageImages/ReviewsImg/superman.png";
 import Girl from "../../../Assets/HomePageImages/ReviewsImg/animationgirl.png";
 import Batman from "../../../Assets/HomePageImages/ReviewsImg/batman.png";
 import Warning from "../../../Assets/HomePageImages/ReviewsImg/warning.png";
-// import Foods from "../../../datafood.json";
 import "./Reviews.css";
 
 const Reviews = () => {
-  // const [foods] = useState(Foods.Recipe);
-
   return (
     <>
       <div className="reviews">
@@ -73,13 +70,6 @@ const Reviews = () => {
           </div>
         </div>
       </div>
-      {/* <div>
-        {foods.map((food, index) => (
-          <ol key={index}>
-            {food.Genre?.includes("akdeniz") ? <li>{food.Name}</li> : ""}
-          </ol>
-        ))}
-      </div> */}
     </>
   );
 };

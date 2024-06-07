@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Recipe = require("../Models/Recipe.js");
 
+//!Get all meals
 router.get("/", async (req, res) => {
   const { calories, meals, genre } = req.query;
   const maxCalories = parseInt(calories, 10) + 30;
@@ -47,6 +48,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+//!Fetch a single food
 router.get("/regenerate", async (req, res) => {
   const { calories, genre } = req.query;
   const maxCalories = parseInt(calories, 10);

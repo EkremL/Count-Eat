@@ -25,8 +25,8 @@ const BlogHome = () => {
         const response = await fetch(url);
         if (response.ok) {
           const data = await response.json();
-          setBlogs(data.blogs); // API'nin döndüğü bloglar
-          setTotalBlogs(data.totalBlogs); // API'nin döndüğü toplam blog sayısı
+          setBlogs(data.blogs);
+          setTotalBlogs(data.totalBlogs);
         } else {
           console.error("Failed to fetch blogs:", response.status);
         }
@@ -36,7 +36,7 @@ const BlogHome = () => {
     };
 
     fetchBlogs();
-  }, [currentPage, pageSize, selectedCategory]); // useEffect bağımlılıkları doğru ayarlanmış
+  }, [currentPage, pageSize, selectedCategory]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -44,7 +44,7 @@ const BlogHome = () => {
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // Yeni kategori seçildiğinde sayfayı 1'e ayarla
+    setCurrentPage(1);
     setActiveCategory(category);
   };
 
@@ -73,7 +73,7 @@ const BlogHome = () => {
         <Pagination
           onPageChange={handlePageChange}
           currentPage={currentPage}
-          totalBlogs={totalBlogs} // Toplam blog sayısını pagination bileşenine geçir
+          totalBlogs={totalBlogs}
           pageSize={pageSize}
         />
       </div>

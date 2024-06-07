@@ -1,7 +1,7 @@
 .form-group {
   margin-bottom: 20px;
   display: flex;
-  align-items: center; /* Labeller ve inputları dikeyde hizalar */
+  align-items: center;
 }
 
 .form-label {
@@ -9,12 +9,11 @@
   font-family: "Work Sans-Black", Helvetica;
   font-size: 20px;
   font-weight: 900;
-  margin-right: 20px; /* Labellerin sağında biraz boşluk bırakır */
+  margin-right: 20px;
   flex: 1;
 }
 
 .form-control {
-  /* Inputları esnek boyutlandırma, labellerden sonra gelen tüm boş alanı kaplar */
   height: 40px;
   padding: 0 10px;
   border: 1px solid #ccc;

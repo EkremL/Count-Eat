@@ -25,7 +25,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Hash the password before saving to the database
 userSchema.pre("save", async function (next) {
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt();
@@ -34,7 +33,6 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Static method to login user
 userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {

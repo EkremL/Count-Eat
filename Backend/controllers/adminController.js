@@ -7,13 +7,12 @@ const admin_add = (req, res) => {
 };
 
 const admin_add_post = (req, res) => {
-  // Add logic here
   res.send("Admin add post request");
 };
 
 const admin_delete = (req, res) => {
   const { id } = req.params;
-  // Delete logic here
+
   res.send(`Admin delete request for id ${id}`);
 };
 

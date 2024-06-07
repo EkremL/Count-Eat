@@ -7,7 +7,7 @@ const SingleFoodPage = () => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const [singleRecipe, setSingleRecipe] = useState(null);
 
-  // FETCH SINGLE FOOD
+  //! FETCH SINGLE FOOD
   useEffect(() => {
     const fetchSingleRecipe = async () => {
       try {
