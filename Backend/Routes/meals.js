@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
 
 router.get("/regenerate", async (req, res) => {
   const { calories, genre } = req.query;
-  const maxCalories = parseInt(calories, 10) + 30;
+  const maxCalories = parseInt(calories, 10);
 
   try {
     let allRecipes;
@@ -61,12 +61,12 @@ router.get("/regenerate", async (req, res) => {
 
     const randomIndex = Math.floor(Math.random() * allRecipes.length);
     const selectedRecipe = allRecipes[randomIndex];
-    const updatedRecipe = {
-      ...selectedRecipe.toObject(),
-      Calorie: selectedRecipe.Calorie * 2,
-    };
 
-    res.status(200).json(updatedRecipe);
+    if (selectedRecipe.Calorie <= maxCalories) {
+      res.status(200).json(selectedRecipe);
+    } else {
+      res.status(400).json({ error: "No suitable recipe found" });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({ error: "Server Error" });

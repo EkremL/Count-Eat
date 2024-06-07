@@ -5,6 +5,7 @@ import Vejetaryen from "../../../Assets/HomePageImages/CalculateImg/vejeteryan.p
 import Vegannn from "../../../Assets/HomePageImages/CalculateImg/vegan.png";
 import Keto from "../../../Assets/HomePageImages/CalculateImg/ketojenik.png";
 import Akdeniz from "../../../Assets/HomePageImages/CalculateImg/akdeniz.png";
+import { FaChartPie } from "react-icons/fa";
 import { SlRefresh } from "react-icons/sl";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -197,9 +198,19 @@ const CalculateContent = () => {
           </div>
           {mealPlan.length > 0 && (
             <div className="meal-plan mt-8">
+              <div className="total-calories-div flex items-center bg-green-100 p-4 rounded-lg mb-4">
+                <FaChartPie size={32} className="text-green-600 mr-2" />
+                <p className="text-xl font-bold text-green-700">
+                  Toplam Kalori:{" "}
+                  {mealPlan
+                    .flat()
+                    .reduce((total, meal) => total + meal.Calorie, 0)}{" "}
+                  Kalori
+                </p>
+              </div>
               {mealPlan.map((meal, mealIndex) => (
                 <div key={mealIndex}>
-                  <h3>Öğün {mealIndex + 1}</h3>
+                  <h3 className="font-bold">Öğün {mealIndex + 1}</h3>
                   {meal.map((recipe, recipeIndex) => (
                     <div
                       key={recipe.id}
