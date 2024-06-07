@@ -46,8 +46,10 @@ const Verify = () => {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        message.success("Giriş başarılı!");
-        navigate("/");
+        setTimeout(() => {
+          navigate("/");
+          message.success("Kayıt başarılı!");
+        }, 1000);
       } else {
         message.error(data.message || "Bir hata oluştu.");
       }

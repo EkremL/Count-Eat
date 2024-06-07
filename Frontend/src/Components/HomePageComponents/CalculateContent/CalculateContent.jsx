@@ -5,6 +5,7 @@ import Vejetaryen from "../../../Assets/HomePageImages/CalculateImg/vejeteryan.p
 import Vegannn from "../../../Assets/HomePageImages/CalculateImg/vegan.png";
 import Keto from "../../../Assets/HomePageImages/CalculateImg/ketojenik.png";
 import Akdeniz from "../../../Assets/HomePageImages/CalculateImg/akdeniz.png";
+import { SlRefresh } from "react-icons/sl";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { message } from "antd";
@@ -64,6 +65,30 @@ const CalculateContent = () => {
       }
     } catch (error) {
       console.error("Error fetching meal plan:", error);
+    }
+  };
+
+  const handleRegenerate = async (mealIndex, recipeIndex) => {
+    const selectedGenre = genres[activeIndex];
+    try {
+      const response = await fetch(
+        `${apiUrl}/api/meals/regenerate?calories=${calories}&genre=${selectedGenre}`
+      );
+      if (response.ok) {
+        const newRecipe = await response.json();
+        setMealPlan((prevMealPlan) => {
+          const updatedMealPlan = [...prevMealPlan];
+          updatedMealPlan[mealIndex][recipeIndex] = newRecipe;
+          return updatedMealPlan;
+        });
+      } else {
+        console.error(
+          "Error regenerating meal: Server responded with status",
+          response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error regenerating meal:", error);
     }
   };
 
@@ -155,7 +180,6 @@ const CalculateContent = () => {
                     />
                   </div>
                 </div>
-
                 <div className="md:flex md:items-center">
                   <div className="md:w-1/3"></div>
                   <div className="md:w-2/3">
@@ -171,18 +195,12 @@ const CalculateContent = () => {
               </form>
             </div>
           </div>
-          {/* {calories == 0 ||
-            (meals == 0 && (
-              <div>
-                {message.warning("Girilen kalori veya öğün sayısı 0 olamaz!")}
-              </div>
-            ))} */}
           {mealPlan.length > 0 && (
             <div className="meal-plan mt-8">
-              {mealPlan.map((meal, index) => (
-                <div key={index}>
-                  <h3>Öğün {index + 1}</h3>
-                  {meal.map((recipe) => (
+              {mealPlan.map((meal, mealIndex) => (
+                <div key={mealIndex}>
+                  <h3>Öğün {mealIndex + 1}</h3>
+                  {meal.map((recipe, recipeIndex) => (
                     <div
                       key={recipe.id}
                       className="recipe-item flex gap-4 pb-0"
@@ -203,6 +221,12 @@ const CalculateContent = () => {
                           {recipe.Calorie} Kalori
                         </p>
                       </div>
+                      <button
+                        className="refresh-button ml-auto mr-6 pb-4"
+                        onClick={() => handleRegenerate(mealIndex, recipeIndex)}
+                      >
+                        <SlRefresh style={{ width: "28px", height: "28px" }} />
+                      </button>
                     </div>
                   ))}
                 </div>

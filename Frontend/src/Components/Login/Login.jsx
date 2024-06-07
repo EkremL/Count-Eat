@@ -7,7 +7,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const apiUrl = "http://localhost:5000"; // Backend URL'sini buraya girin
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,9 +22,11 @@ const Login = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("token", data.token); // Added to save token
-        navigate("/");
-        message.success("Giriş başarılı!");
+        localStorage.setItem("token", data.token);
+        setTimeout(() => {
+          navigate("/");
+          message.success("Giriş başarılı!");
+        }, 1000);
       } else {
         setError(data.message);
       }

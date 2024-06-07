@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import { basicSchema } from "../../Schemas"; // Validation şemanız burada olmalı
+import { basicSchema } from "../../Schemas";
 import "./Register.css";
 
 const Register = () => {
