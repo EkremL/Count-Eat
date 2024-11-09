@@ -37,9 +37,8 @@ app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(
   cors({
-    origin: "*", // Veya sadece izin vermek istediğiniz domainleri ekleyebilirsiniz
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
+    origin: process.env.CLIENT_DOMAIN,
+    credentials: true,
   })
 );
 app.use(express.static("public"));
