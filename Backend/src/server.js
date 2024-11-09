@@ -35,18 +35,17 @@ app.set("view engine", "ejs");
 
 //!Middlewares
 app.use(logger("dev"));
+app.use(cookieParser());
+app.use(express.json());
 app.use(
   cors({
     origin: process.env.CLIENT_DOMAIN,
     credentials: true,
   })
 );
-app.use(express.static("public"));
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// app.use(express.static("public"));
 
-app.get("*", checkUser);
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
@@ -57,8 +56,9 @@ app.use("/admin", requireAuth, adminRoutes);
 //! Auth Routes
 app.post("/signup", authController.signup_post);
 
+app.get("*", checkUser);
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
 });
 
 app.listen(port, () => {
