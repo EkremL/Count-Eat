@@ -5,11 +5,10 @@ import { FaArrowRight } from "react-icons/fa6";
 
 const Banner = () => {
   return (
-    <div className="px-4 py-32 bg-green-800 mx-auto border-b-4 border-black ">
+    <div className="px-4 py-32 bg-green-800 mx-auto border-b-2 border-black ">
       <div className="text-white text-center">
         <h1 className="text-5xl lg:text-5xl leading-snug font-bold mb-5 text-white">
-          Count <span className="text-orange-500">&</span> Eat Blog Sayfasına
-          Hoşgeldiniz.
+          Count <span>&</span> Eat Blog Sayfasına Hoşgeldiniz.
         </h1>
         <p className="text-gray-100 lg:w-3/5 mx-auto mb-5 font-primary">
           Blog sayfasina hos geldiniz! Burada saglikli yasamla ilgili

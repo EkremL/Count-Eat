@@ -6,8 +6,12 @@ const port = 5000;
 const logger = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { requireAuth, checkUser } = require("./middlewares/authMiddleware");
-const authController = require("./controllers/authController");
+const {
+  requireAuth,
+  checkUser,
+} = require("../src/middlewares/authMiddleware.js");
+const authController = require("../src/controllers/authController");
+const path = require("path");
 
 //!config
 dotenv.config();
@@ -39,12 +43,18 @@ app.use(express.json());
 
 app.get("*", checkUser);
 
+app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+
 app.use("/api", MainRoute);
 app.use("/", authRoutes);
 app.use("/admin", requireAuth, adminRoutes);
 
 //! Auth Routes
 app.post("/signup", authController.signup_post);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
 
 app.listen(port, () => {
   connect();

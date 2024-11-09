@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
-const { userSchema } = require("../models/users");
+const { userSchema } = require("../Models/users");
 
 userSchema.statics.register = async function (username, email, password) {
   const existingUser = await this.findOne({ $or: [{ username }, { email }] });
