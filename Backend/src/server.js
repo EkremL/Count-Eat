@@ -48,7 +48,7 @@ app.use(express.json());
 
 app.get("*", checkUser);
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use(express.static(path.join(__dirname, "frontend", "dist")));
 
 app.use("/api", MainRoute);
 app.use("/", authRoutes);
