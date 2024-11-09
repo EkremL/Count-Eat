@@ -47,7 +47,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+app.use(express.static(path.join(__dirname, "../../frontend/dist/index.html")));
 
 app.use("/api", MainRoute);
 app.use("/", authRoutes);
