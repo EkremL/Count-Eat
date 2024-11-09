@@ -35,7 +35,13 @@ app.set("view engine", "ejs");
 
 //!Middlewares
 app.use(logger("dev"));
-app.use(cors());
+app.use(
+  cors({
+    origin: "*", // Veya sadece izin vermek istediğiniz domainleri ekleyebilirsiniz
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use(express.static("public"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
