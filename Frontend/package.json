@@ -12,6 +12,10 @@
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "*"
   },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
   "dependencies": {
     "antd": "^5.16.0",
     "apexcharts": "^3.49.1",
