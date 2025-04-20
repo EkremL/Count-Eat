@@ -55,9 +55,9 @@ npm install
 npm run dev
 
 📸 Screenshots
-![Homepage](screenshots/count&eat1.png)
-![Blog](screenshots/count&eat2.png)
-![LoginPage](screenshots/count&eat3.png)
+![Homepage](Screenshots/count&eat1.png)
+![Blog](Screenshots/count&eat2.png)
+![LoginPage](Screenshots/count&eat3.png)
 
 🧠 Lessons Learned
 Through building this project, I enhanced my skills and knowledge in:
