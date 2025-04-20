@@ -17,7 +17,6 @@ and develop healthier eating habits through an intuitive interface.
 - Frontend:
   - React.js
   - Tailwind CSS
-  - Zustand (state management)
 
 - Backend:
   - Node.js
