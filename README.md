@@ -34,7 +34,7 @@ and develop healthier eating habits through an intuitive interface.
 - MongoDB installed and running locally or cloud-based MongoDB instance
 
 🚀 Installation Steps
-# Clone the repository
+- Clone the repository
 git clone https://github.com/EkremL/Count-Eat.git
 
 - Navigate to the backend directory and install dependencies
