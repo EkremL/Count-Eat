@@ -37,21 +37,21 @@ and develop healthier eating habits through an intuitive interface.
 # Clone the repository
 git clone https://github.com/EkremL/Count-Eat.git
 
-# Navigate to the backend directory and install dependencies
+- Navigate to the backend directory and install dependencies
 cd Count-Eat/backend
 npm install
 
-# Create an .env file and configure required environment variables
+- Create an .env file and configure required environment variables
 touch .env
 
-# Start the backend server
+- Start the backend server
 npm run dev
 
-# Open a new terminal and navigate to the frontend directory
+- Open a new terminal and navigate to the frontend directory
 cd ../frontend
 npm install
 
-# Run the frontend application
+- Run the frontend application
 npm run dev
 
 📸 Screenshots
